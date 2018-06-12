@@ -1,0 +1,57 @@
+<datapower-configuration version="3">
+    <export-details>
+        <description>Exported Configuration</description>
+        <user>admin</user>
+        <domain>APIC-System</domain>
+        <product-id>5725</product-id>
+        <product>IDG</product>
+        <display-product>IDG</display-product>
+        <model>IBM DataPower Gateway</model>
+        <display-model>IBM DataPower Gateway</display-model>
+        <serial-number>0000000</serial-number>
+        <firmware-version>IDG.7.7.0.2</firmware-version>
+        <display-firmware-version>IDG.7.7.0.2</display-firmware-version>
+        <firmware-build>298364</firmware-build>
+        <firmware-timestamp>2018/04/17 15:33:37</firmware-timestamp>
+    </export-details>
+    <configuration domain="APIC-System">
+        <StylePolicyAction name="PROJNAME-main_gatewayscript_2" xmlns:env="http://www.w3.org/2003/05/soap-envelope" xmlns:dp="http://www.datapower.com/schemas/management">
+            <mAdminState>enabled</mAdminState>
+            <Type>gatewayscript</Type>
+            <Input>INPUT</Input>
+            <ParseMetricsResultType>none</ParseMetricsResultType>
+            <TransformLanguage>none</TransformLanguage>
+            <GatewayScriptLocation>local:///policy/PROJNAME/PROJNAME.js</GatewayScriptLocation>
+            <ActionDebug persisted="false">off</ActionDebug>
+            <Output>OUTPUT</Output>
+            <NamedInOutLocationType>default</NamedInOutLocationType>
+            <SSLClientConfigType>proxy</SSLClientConfigType>
+            <Transactional>off</Transactional>
+            <SOAPValidation>body</SOAPValidation>
+            <SQLSourceType>static</SQLSourceType>
+            <JWSVerifyStripSignature>on</JWSVerifyStripSignature>
+            <Asynchronous>off</Asynchronous>
+            <ResultsMode>first-available</ResultsMode>
+            <RetryCount>0</RetryCount>
+            <RetryInterval>1000</RetryInterval>
+            <MultipleOutputs>off</MultipleOutputs>
+            <IteratorType>XPATH</IteratorType>
+            <Timeout>0</Timeout>
+            <MethodRewriteType>GET</MethodRewriteType>
+            <MethodType>POST</MethodType>
+            <MethodType2>POST</MethodType2>
+        </StylePolicyAction>
+        <StylePolicyRule name="PROJNAME-main" xmlns:env="http://www.w3.org/2003/05/soap-envelope" xmlns:dp="http://www.datapower.com/schemas/management">
+            <mAdminState>enabled</mAdminState>
+            <Actions class="StylePolicyAction">PROJNAME-main_gatewayscript_2</Actions>
+            <Direction>request-rule</Direction>
+            <InputFormat>none</InputFormat>
+            <OutputFormat>none</OutputFormat>
+            <NonXMLProcessing>off</NonXMLProcessing>
+            <Unprocessed>off</Unprocessed>
+        </StylePolicyRule>
+    </configuration>
+    <files>
+        <file name="local:///policy/PROJNAME/PROJNAME.js" src="local/policy/PROJNAME/PROJNAME.js" location="local" hash="JSFILEHASH"/>
+    </files>
+</datapower-configuration>
