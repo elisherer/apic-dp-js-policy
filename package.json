@@ -1,6 +1,6 @@
 {
   "name": "apic-dp-js-policy",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "API Connect DataPower custom gatewayscript policy maker",
   "main": "./index.js",
   "bin": {

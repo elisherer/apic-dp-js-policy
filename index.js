@@ -48,7 +48,9 @@ console.log(chalk`{magenta API Connect DataPower custom js policy maker}\n{cyan 
     const outputDir = path.join(process.cwd(), 'output');
     if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
 
-    const tempDir = path.join(outputDir, (new Date()).toISOString().replace(/[.:]/g, '-'));
+    const timestamp = (new Date()).toISOString().replace(/[.:]/g, '-');
+
+    const tempDir = path.join(outputDir, `${projName}-${timestamp}`);
     fs.mkdirSync(tempDir);
 
     const implDir = path.join(tempDir, 'implementation');
@@ -71,7 +73,7 @@ console.log(chalk`{magenta API Connect DataPower custom js policy maker}\n{cyan 
       archive.finalize();
     });
 
-    const policyZipPath = path.join(tempDir, projName + '.zip');
+    const policyZipPath = path.join(outputDir, `policy-${timestamp}-${projName}.zip`);
     await new Promise((resolve, reject) => {
       logI`Preparing custom policy zip file ...`;
       const output = fs.createWriteStream(policyZipPath);
@@ -91,6 +93,7 @@ console.log(chalk`{magenta API Connect DataPower custom js policy maker}\n{cyan 
     logI`Cleaning up ...`;
     fs.unlinkSync(implZipPath); // delete implementation zip
     fs.rmdirSync(implDir); // delete implementation dir
+    fs.rmdirSync(tempDir); // delete temp dir
     logS`{green Done}. File is ready at:\n  {blue ${policyZipPath}}`;
   }
   catch (err) {
