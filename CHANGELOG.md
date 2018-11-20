@@ -1,3 +1,6 @@
+[2.2.0] - 2018-11-20
+* Added error catching (almost same as original example by api connect)
+
 [2.1.0-2.1.2] - 2018-11-20
 * Added the payload xsl file
 

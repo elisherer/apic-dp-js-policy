@@ -58,16 +58,21 @@ console.log(chalk`{magenta API Connect DataPower custom js policy maker}\n{cyan 
     logI`Preparing export.xml file ...`;
     const exportXmlTemplate = fs.readFileSync(path.join(__dirname, '_export.xml'), 'utf8');
 
+    //is-json.xsl
     const isJsonXsl = fs.readFileSync(path.join(__dirname, 'is-json.xsl'), 'utf8');
     const isJsonXslSha1 = sha1base64(isJsonXsl);
-
+    //payload.xsl
     const payloadXsl = fs.readFileSync(path.join(__dirname, 'payload.xsl'), 'utf8');
     const payloadXslSha1 = sha1base64(payloadXsl);
+    //error.xsl
+    const errorXsl = fs.readFileSync(path.join(__dirname, 'error.xsl'), 'utf8');
+    const errorXslSha1 = sha1base64(errorXsl);
 
     const exportXml = exportXmlTemplate
       .replace(/&PROJNAME;/g, projName)
       .replace(/&ISJSONFILEHASH;/g, isJsonXslSha1)
       .replace(/&PAYLOADFILEHASH;/g, payloadXslSha1)
+      .replace(/&ERRORFILEHASH;/g, errorXslSha1)
       .replace(/&JSFILEHASH;/g, jsFileSha1);
 
     logS`Finished preparing export.xml file`;
@@ -92,6 +97,7 @@ console.log(chalk`{magenta API Connect DataPower custom js policy maker}\n{cyan 
       archive.append(exportXml, {name: 'export.xml'});
       archive.append(isJsonXsl, {name: `local/policy/${projName}/is-json.xsl`});
       archive.append(payloadXsl, {name: `local/policy/${projName}/payload.xsl`});
+      archive.append(errorXsl, {name: `local/policy/${projName}/error.xsl`});
       archive.append(jsFile, {name: `local/policy/${projName}/${projName}.js`});
 
       archive.on('finish', () => {

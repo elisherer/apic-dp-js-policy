@@ -15,11 +15,67 @@
         <firmware-timestamp>2018/04/17 15:33:37</firmware-timestamp>
     </export-details>
     <configuration domain="APIC-System">
-
-        <StylePolicyAction name="&PROJNAME;-get-payload" xmlns:env="http://www.w3.org/2003/05/soap-envelope" xmlns:dp="http://www.datapower.com/schemas/management">
+        <StylePolicyAction name="&PROJNAME;-handle-error-xform" xmlns:env="http://www.w3.org/2003/05/soap-envelope" xmlns:dp="http://www.datapower.com/schemas/management">
             <mAdminState>enabled</mAdminState>
             <Type>xform</Type>
             <Input>NULL</Input>
+            <Transform>local:///policy/&PROJNAME;/error.xsl</Transform>
+            <ActionDebug persisted="false">off</ActionDebug>
+            <Output>NULL</Output>
+            <NamedInOutLocationType>default</NamedInOutLocationType>
+            <SSLClientConfigType>proxy</SSLClientConfigType>
+            <OutputType>default</OutputType>
+            <Transactional>off</Transactional>
+            <SOAPValidation>body</SOAPValidation>
+            <SQLSourceType>static</SQLSourceType>
+            <JWSVerifyStripSignature>on</JWSVerifyStripSignature>
+            <Asynchronous>off</Asynchronous>
+            <ResultsMode>first-available</ResultsMode>
+            <RetryCount>0</RetryCount>
+            <RetryInterval>1000</RetryInterval>
+            <MultipleOutputs>off</MultipleOutputs>
+            <IteratorType>XPATH</IteratorType>
+            <Timeout>0</Timeout>
+            <MethodRewriteType>GET</MethodRewriteType>
+            <MethodType>POST</MethodType>
+            <MethodType2>POST</MethodType2>
+        </StylePolicyAction>
+        <StylePolicyRule name="&PROJNAME;-error" xmlns:env="http://www.w3.org/2003/05/soap-envelope" xmlns:dp="http://www.datapower.com/schemas/management">
+            <mAdminState>enabled</mAdminState>
+            <Direction>error-rule</Direction>
+            <InputFormat>none</InputFormat>
+            <OutputFormat>none</OutputFormat>
+            <NonXMLProcessing>on</NonXMLProcessing>
+            <Unprocessed>off</Unprocessed>
+            <Actions class="StylePolicyAction">&PROJNAME;-handle-error-xform</Actions>
+        </StylePolicyRule>
+        <StylePolicyAction name="&PROJNAME;-custom-error-handler" xmlns:env="http://www.w3.org/2003/05/soap-envelope" xmlns:dp="http://www.datapower.com/schemas/management">
+            <mAdminState>enabled</mAdminState>
+            <Type>on-error</Type>
+            <ActionDebug persisted="false">off</ActionDebug>
+            <NamedInOutLocationType>default</NamedInOutLocationType>
+            <SSLClientConfigType>proxy</SSLClientConfigType>
+            <ErrorMode>continue</ErrorMode>
+            <Rule>&PROJNAME;-error</Rule>
+            <Transactional>off</Transactional>
+            <SOAPValidation>body</SOAPValidation>
+            <SQLSourceType>static</SQLSourceType>
+            <JWSVerifyStripSignature>on</JWSVerifyStripSignature>
+            <Asynchronous>off</Asynchronous>
+            <ResultsMode>first-available</ResultsMode>
+            <RetryCount>0</RetryCount>
+            <RetryInterval>1000</RetryInterval>
+            <MultipleOutputs>off</MultipleOutputs>
+            <IteratorType>XPATH</IteratorType>
+            <Timeout>0</Timeout>
+            <MethodRewriteType>GET</MethodRewriteType>
+            <MethodType>POST</MethodType>
+            <MethodType2>POST</MethodType2>
+        </StylePolicyAction>
+        <StylePolicyAction name="&PROJNAME;-get-payload" xmlns:env="http://www.w3.org/2003/05/soap-envelope" xmlns:dp="http://www.datapower.com/schemas/management">
+            <mAdminState>enabled</mAdminState>
+            <Type>xform</Type>
+            <Input>INPUT</Input>
             <Transform>local:///policy/&PROJNAME;/payload.xsl</Transform>
             <ActionDebug persisted="false">off</ActionDebug>
             <Output>INPUT</Output>
@@ -41,7 +97,6 @@
             <MethodType>POST</MethodType>
             <MethodType2>POST</MethodType2>
         </StylePolicyAction>
-
         <StylePolicyAction name="&PROJNAME;-run" xmlns:env="http://www.w3.org/2003/05/soap-envelope" xmlns:dp="http://www.datapower.com/schemas/management">
             <mAdminState>enabled</mAdminState>
             <Type>gatewayscript</Type>
@@ -66,7 +121,6 @@
             <MethodType>POST</MethodType>
             <MethodType2>POST</MethodType2>
         </StylePolicyAction>
-
         <StylePolicyAction name="&PROJNAME;-check-media-type" xmlns:env="http://www.w3.org/2003/05/soap-envelope" xmlns:dp="http://www.datapower.com/schemas/management">
             <mAdminState>enabled</mAdminState>
             <Type>xform</Type>
@@ -154,6 +208,28 @@
             <MethodType>POST</MethodType>
             <MethodType2>POST</MethodType2>
         </StylePolicyAction>
+        <StylePolicyAction name="&PROJNAME;-default-error-handler" xmlns:env="http://www.w3.org/2003/05/soap-envelope" xmlns:dp="http://www.datapower.com/schemas/management">
+            <mAdminState>enabled</mAdminState>
+            <Type>on-error</Type>
+            <ActionDebug persisted="false">off</ActionDebug>
+            <NamedInOutLocationType>default</NamedInOutLocationType>
+            <SSLClientConfigType>proxy</SSLClientConfigType>
+            <ErrorMode>abort</ErrorMode>
+            <Transactional>off</Transactional>
+            <SOAPValidation>body</SOAPValidation>
+            <SQLSourceType>static</SQLSourceType>
+            <JWSVerifyStripSignature>on</JWSVerifyStripSignature>
+            <Asynchronous>off</Asynchronous>
+            <ResultsMode>first-available</ResultsMode>
+            <RetryCount>0</RetryCount>
+            <RetryInterval>1000</RetryInterval>
+            <MultipleOutputs>off</MultipleOutputs>
+            <IteratorType>XPATH</IteratorType>
+            <Timeout>0</Timeout>
+            <MethodRewriteType>GET</MethodRewriteType>
+            <MethodType>POST</MethodType>
+            <MethodType2>POST</MethodType2>
+        </StylePolicyAction>
         <StylePolicyAction name="&PROJNAME;-output" xmlns:env="http://www.w3.org/2003/05/soap-envelope" xmlns:dp="http://www.datapower.com/schemas/management">
             <mAdminState>enabled</mAdminState>
             <Type>xform</Type>
@@ -179,24 +255,26 @@
             <MethodType>POST</MethodType>
             <MethodType2>POST</MethodType2>
         </StylePolicyAction>
-        
         <StylePolicyRule name="&PROJNAME;-main" xmlns:env="http://www.w3.org/2003/05/soap-envelope" xmlns:dp="http://www.datapower.com/schemas/management">
             <mAdminState>enabled</mAdminState>
-            <Actions class="StylePolicyAction">&PROJNAME;-get-payload</Actions>
-            <Actions class="StylePolicyAction">&PROJNAME;-run</Actions>
-            <Actions class="StylePolicyAction">&PROJNAME;-check-media-type</Actions>
-            <Actions class="StylePolicyAction">&PROJNAME;-condition-if-json</Actions>
-            <Actions class="StylePolicyAction">&PROJNAME;-output</Actions>
             <Direction>request-rule</Direction>
             <InputFormat>none</InputFormat>
             <OutputFormat>none</OutputFormat>
             <NonXMLProcessing>off</NonXMLProcessing>
             <Unprocessed>off</Unprocessed>
+            <Actions class="StylePolicyAction">&PROJNAME;-custom-error-handler</Actions>
+            <Actions class="StylePolicyAction">&PROJNAME;-get-payload</Actions>
+            <Actions class="StylePolicyAction">&PROJNAME;-run</Actions>
+            <Actions class="StylePolicyAction">&PROJNAME;-check-media-type</Actions>
+            <Actions class="StylePolicyAction">&PROJNAME;-condition-if-json</Actions>
+            <Actions class="StylePolicyAction">&PROJNAME;-default-error-handler</Actions>
+            <Actions class="StylePolicyAction">&PROJNAME;-output</Actions>
         </StylePolicyRule>
     </configuration>
     <files>
+        <file name="local:///policy/&PROJNAME;/error.xsl" src="local/policy/&PROJNAME;/error.xsl" location="local" hash="&ERRORFILEHASH;"/>
         <file name="local:///policy/&PROJNAME;/&PROJNAME;.js" src="local/policy/&PROJNAME;/&PROJNAME;.js" location="local" hash="&JSFILEHASH;"/>
-        <file name="local:///policy/&PROJNAME;/is-json.xsl" src="local/policy/&PROJNAME;/is-json.xsl" location="local" hash="&ISJSONFILEHASH;"/>
         <file name="local:///policy/&PROJNAME;/payload.xsl" src="local/policy/&PROJNAME;/payload.xsl" location="local" hash="&PAYLOADFILEHASH;"/>
+        <file name="local:///policy/&PROJNAME;/is-json.xsl" src="local/policy/&PROJNAME;/is-json.xsl" location="local" hash="&ISJSONFILEHASH;"/>
     </files>
 </datapower-configuration>
