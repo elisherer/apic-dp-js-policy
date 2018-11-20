@@ -75,10 +75,10 @@ properties:
 
 Run the following command from outside that folder:
 ```
-apic-dp-js-policy {projName}
+apic-dp-js-policy --project {projName}
 ```
 
-(e.g. `apic-dp-js-policy helloWorld`)
+(e.g. `apic-dp-js-policy -p helloWorld`)
 
 ## Credits
 

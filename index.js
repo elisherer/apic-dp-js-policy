@@ -13,8 +13,23 @@ const logI = (strings, ...values) => console.log(chalk.blue('i') + ' ' + chalk(s
 const logS = (strings, ...values) => console.log(chalk.green('√ ' + chalk(strings, ...values)));
 const logE = (strings, ...values) => console.log(chalk.red('× ' + chalk(strings, ...values)));
 
-const projPathName = path.resolve(process.argv[2]);
-const projName = path.basename(projPathName);
+/**
+ * @property path (string) The project's path
+ * @property name (string) The project's name (default is project's path dir name)
+ */
+const argv = require('yargs')
+  .option('path', {
+    alias: 'p',
+    default: ''
+  })
+  .option('name', {
+    alias: 'n',
+    default: ''
+  })
+  .argv;
+
+const projPath = path.resolve(argv.path);
+const projName = argv.name || path.basename(projPath);
 
 console.log(chalk`{magenta API Connect DataPower custom js policy maker}\n{cyan by Eli Sherer <eli.sherer@gmail.com>}\n`);
 
@@ -24,12 +39,12 @@ console.log(chalk`{magenta API Connect DataPower custom js policy maker}\n{cyan 
     logI`Starting to create {blue [${projName}]} ...`;
 
     logI`Reading js file ${projName}.js ...`;
-    const jsFile = fs.readFileSync(path.join(projPathName, projName + '.js'), 'utf8');
+    const jsFile = fs.readFileSync(path.join(projPath, projName + '.js'), 'utf8');
     const jsFileSha1 = sha1base64(jsFile);
     logS`Finished reading js file {yellow (Sha1 hash = ${jsFileSha1})}`;
 
     logI`Validating yaml file ${projName}.yaml ...`;
-    const yamlFile = fs.readFileSync(path.join(projPathName, projName + '.yaml'), 'utf8');
+    const yamlFile = fs.readFileSync(path.join(projPath, projName + '.yaml'), 'utf8');
     const yamlObj = YAML.parse(yamlFile);
     const expectedPolicyVersion = "1.0.0";
     assert.strictEqual(yamlObj.policy, expectedPolicyVersion, `  Expecting [policy] to be ${expectedPolicyVersion} but got ${yamlObj.policy} instead`);
@@ -42,7 +57,15 @@ console.log(chalk`{magenta API Connect DataPower custom js policy maker}\n{cyan 
 
     logI`Preparing export.xml file ...`;
     const exportXmlTemplate = fs.readFileSync(path.join(__dirname, '_export.xml'), 'utf8');
-    const exportXml = exportXmlTemplate.replace(/PROJNAME/g, projName).replace(/JSFILEHASH/g, jsFileSha1);
+
+    const isJsonFile = fs.readFileSync(path.join(__dirname, 'is-json.xsl'), 'utf8');
+    const isJsonFileSha1 = sha1base64(isJsonFile);
+
+    const exportXml = exportXmlTemplate
+      .replace(/&PROJNAME;/g, projName)
+      .replace(/&ISJSONFILEHASH;/g, isJsonFileSha1)
+      .replace(/&JSFILEHASH;/g, jsFileSha1);
+
     logS`Finished preparing export.xml file`;
 
     const outputDir = path.join(process.cwd(), 'output');

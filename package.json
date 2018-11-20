@@ -1,6 +1,6 @@
 {
   "name": "apic-dp-js-policy",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "API Connect DataPower custom gatewayscript policy maker",
   "main": "./index.js",
   "bin": {
@@ -12,21 +12,28 @@
   },
   "license": "MIT",
   "files": [
-	"LICENSE",
+    "LICENSE",
     "README.md",
-	"package.json",
+    "package.json",
     "index.js",
-	"_export.xml"
+    "_export.xml"
   ],
   "dependencies": {
     "archiver": "^2.1.1",
     "chalk": "^2.4.1",
-    "yamljs": "^0.3.0"
+    "yamljs": "^0.3.0",
+    "yargs": "^12.0.5"
   },
   "author": {
     "name": "Eli Sherer",
     "email": "eli.sherer@gmail.com"
   },
-  "license": "MIT",
-  "keywords": ["ibm", "apic", "apiconnect", "datapower", "policy", "gatewayscript"]
+  "keywords": [
+    "ibm",
+    "apic",
+    "apiconnect",
+    "datapower",
+    "policy",
+    "gatewayscript"
+  ]
 }
