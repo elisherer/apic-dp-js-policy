@@ -58,12 +58,12 @@ console.log(chalk`{magenta API Connect DataPower custom js policy maker}\n{cyan 
     logI`Preparing export.xml file ...`;
     const exportXmlTemplate = fs.readFileSync(path.join(__dirname, '_export.xml'), 'utf8');
 
-    const isJsonFile = fs.readFileSync(path.join(__dirname, 'is-json.xsl'), 'utf8');
-    const isJsonFileSha1 = sha1base64(isJsonFile);
+    const isJsonXsl = fs.readFileSync(path.join(__dirname, 'is-json.xsl'), 'utf8');
+    const isJsonXslSha1 = sha1base64(isJsonXsl);
 
     const exportXml = exportXmlTemplate
       .replace(/&PROJNAME;/g, projName)
-      .replace(/&ISJSONFILEHASH;/g, isJsonFileSha1)
+      .replace(/&ISJSONFILEHASH;/g, isJsonXslSha1)
       .replace(/&JSFILEHASH;/g, jsFileSha1);
 
     logS`Finished preparing export.xml file`;
@@ -86,6 +86,7 @@ console.log(chalk`{magenta API Connect DataPower custom js policy maker}\n{cyan 
       const archive = archiver('zip', {zlib: {level: 9}});
       archive.pipe(output);
       archive.append(exportXml, {name: 'export.xml'});
+      archive.append(isJsonXsl, {name: `local/policy/${projName}/is-json.xsl`});
       archive.append(jsFile, {name: `local/policy/${projName}/${projName}.js`});
 
       archive.on('finish', () => {
