@@ -156,6 +156,9 @@
         <StylePolicyRule name="&PROJNAME;-main" xmlns:env="http://www.w3.org/2003/05/soap-envelope" xmlns:dp="http://www.datapower.com/schemas/management">
             <mAdminState>enabled</mAdminState>
             <Actions class="StylePolicyAction">&PROJNAME;-run</Actions>
+            <Actions class="StylePolicyAction">&PROJNAME;-check-media-type</Actions>
+            <Actions class="StylePolicyAction">&PROJNAME;-condition-if-json</Actions>
+            <Actions class="StylePolicyAction">&PROJNAME;-output</Actions>
             <Direction>request-rule</Direction>
             <InputFormat>none</InputFormat>
             <OutputFormat>none</OutputFormat>
