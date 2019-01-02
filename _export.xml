@@ -276,5 +276,6 @@
         <file name="local:///policy/&PROJNAME;/&PROJNAME;.js" src="local/policy/&PROJNAME;/&PROJNAME;.js" location="local" hash="&JSFILEHASH;"/>
         <file name="local:///policy/&PROJNAME;/payload.xsl" src="local/policy/&PROJNAME;/payload.xsl" location="local" hash="&PAYLOADFILEHASH;"/>
         <file name="local:///policy/&PROJNAME;/is-json.xsl" src="local/policy/&PROJNAME;/is-json.xsl" location="local" hash="&ISJSONFILEHASH;"/>
+        <!--&MOREFILES;-->
     </files>
 </datapower-configuration>

@@ -68,12 +68,31 @@ console.log(chalk`{magenta API Connect DataPower custom js policy maker}\n{cyan 
     const errorXsl = fs.readFileSync(path.join(__dirname, 'error.xsl'), 'utf8');
     const errorXslSha1 = sha1base64(errorXsl);
 
+    //more files
+    let moreFilesXML = '';
+    const supportedFiles = ['package.json'];
+    const moreFiles = [];
+    supportedFiles.forEach(fileName => {
+      const filePath = path.join(projPath, fileName);
+      if (fs.existsSync(filePath)) {
+        logI`Reading js file ${fileName} ...`;
+        const fileContents = fs.readFileSync(filePath, 'utf8');
+        const fileSha1 = sha1base64(fileContents);
+        logS`Finished reading ${fileName} file {yellow (Sha1 hash = ${fileSha1})}`;
+
+        moreFilesXML += `<file name="local:///policy/${projName}/${fileName}" src="local/policy/${projName}/${fileName}" location="local" hash="${fileSha1}"/>`;
+        moreFiles.push({ fileName, fileContents });
+      }
+    });
+
+
     const exportXml = exportXmlTemplate
       .replace(/&PROJNAME;/g, projName)
       .replace(/&ISJSONFILEHASH;/g, isJsonXslSha1)
       .replace(/&PAYLOADFILEHASH;/g, payloadXslSha1)
       .replace(/&ERRORFILEHASH;/g, errorXslSha1)
-      .replace(/&JSFILEHASH;/g, jsFileSha1);
+      .replace(/&JSFILEHASH;/g, jsFileSha1)
+      .replace(/<!--&MOREFILES;-->/g, moreFilesXML);
 
     logS`Finished preparing export.xml file`;
 
@@ -99,6 +118,9 @@ console.log(chalk`{magenta API Connect DataPower custom js policy maker}\n{cyan 
       archive.append(payloadXsl, {name: `local/policy/${projName}/payload.xsl`});
       archive.append(errorXsl, {name: `local/policy/${projName}/error.xsl`});
       archive.append(jsFile, {name: `local/policy/${projName}/${projName}.js`});
+      moreFiles.forEach(fileDesc => {
+        archive.append(fileDesc.fileContents, {name: `local/policy/${projName}/${fileDesc.fileName}`});
+      });
 
       archive.on('finish', () => {
         logS`Finished implementation zip file`;

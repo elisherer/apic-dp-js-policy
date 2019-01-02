@@ -1,3 +1,6 @@
+[2.2.1] - 2019-01-02
+* Add support to include package.json (if exists)
+
 [2.2.0] - 2018-11-20
 * Added error catching (almost same as original example by api connect)
 
