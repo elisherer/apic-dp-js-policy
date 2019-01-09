@@ -49,10 +49,14 @@ console.log(chalk`{magenta API Connect DataPower custom js policy maker}\n{cyan 
     const expectedPolicyVersion = "1.0.0";
     assert.strictEqual(yamlObj.policy, expectedPolicyVersion, `  Expecting [policy] to be ${expectedPolicyVersion} but got ${yamlObj.policy} instead`);
     assert.strictEqual(yamlObj.info.name, projName, `  Expecting [info.name] to be ${projName} but got ${yamlObj.info.name} instead`);
-    const expectedGateway = 'datapower-gateway';
-    assert(yamlObj.gateways.includes(expectedGateway), `  Expecting [gateways] to include '${expectedGateway}'`);
-    const expectedPropSchema = "http://json-schema.org/draft-04/schema#";
-    assert.strictEqual(yamlObj.properties.$schema, expectedPropSchema, `  Expecting [properties.$schema] to be ${expectedPropSchema} but got ${yamlObj.properties.$schema} instead`);
+    const nameRegex = /^([a-z0-9]+(-)*)*([a-z0-9])$/;
+    assert(nameRegex.test(yamlObj.info.name), `  Expecting [info.name] to pass regex: ${nameRegex.source}, value was ${yamlObj.info.name}`);
+    const expectedGateways = ['datapower-gateway', 'datapower-api-gateway'];
+    assert(yamlObj.gateways.some(gw => expectedGateways.includes(gw)), `  Expecting [gateways] to include at least one of [${expectedGateways.join()}]`);
+    if (yamlObj.properties) {
+      const expectedPropSchema = "http://json-schema.org/draft-04/schema#";
+      assert.strictEqual(yamlObj.properties.$schema, expectedPropSchema, `  Expecting [properties.$schema] to be ${expectedPropSchema} but got ${yamlObj.properties.$schema} instead`);
+    }
     logS`File passed validation`;
 
     logI`Preparing export.xml file ...`;
