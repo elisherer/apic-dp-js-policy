@@ -7,6 +7,7 @@ const assert = require('assert');
 const chalk = require('chalk');
 const YAML = require('yamljs');
 const archiver = require('archiver');
+const yargs = require('yargs');
 
 const sha1base64 = content => crypto.createHash('sha1').update(content).digest('base64');
 const logI = (strings, ...values) => console.log(chalk.blue('i') + ' ' + chalk(strings, ...values));
@@ -17,7 +18,7 @@ const logE = (strings, ...values) => console.log(chalk.red('× ' + chalk(strings
  * @property path (string) The project's path
  * @property name (string) The project's name (default is project's path dir name)
  */
-const argv = require('yargs')
+const argv = yargs
   .option('path', {
     alias: 'p',
     default: ''
@@ -45,6 +46,9 @@ console.log(chalk`{magenta API Connect DataPower custom js policy maker}\n{cyan 
 
     logI`Validating yaml file ${projName}.yaml ...`;
     const yamlFile = fs.readFileSync(path.join(projPath, projName + '.yaml'), 'utf8');
+    /**
+     * @type {{ policy: string, info: { name: string }, gateways: Array<string>, properties: { $schema: string }}}
+    **/
     const yamlObj = YAML.parse(yamlFile);
     const expectedPolicyVersion = "1.0.0";
     assert.strictEqual(yamlObj.policy, expectedPolicyVersion, `  Expecting [policy] to be ${expectedPolicyVersion} but got ${yamlObj.policy} instead`);
@@ -62,9 +66,6 @@ console.log(chalk`{magenta API Connect DataPower custom js policy maker}\n{cyan 
     logI`Preparing export.xml file ...`;
     const exportXmlTemplate = fs.readFileSync(path.join(__dirname, '_export.xml'), 'utf8');
 
-    //is-json.xsl
-    const isJsonXsl = fs.readFileSync(path.join(__dirname, 'is-json.xsl'), 'utf8');
-    const isJsonXslSha1 = sha1base64(isJsonXsl);
     //payload.xsl
     const payloadXsl = fs.readFileSync(path.join(__dirname, 'payload.xsl'), 'utf8');
     const payloadXslSha1 = sha1base64(payloadXsl);
@@ -92,7 +93,6 @@ console.log(chalk`{magenta API Connect DataPower custom js policy maker}\n{cyan 
 
     const exportXml = exportXmlTemplate
       .replace(/&PROJNAME;/g, projName)
-      .replace(/&ISJSONFILEHASH;/g, isJsonXslSha1)
       .replace(/&PAYLOADFILEHASH;/g, payloadXslSha1)
       .replace(/&ERRORFILEHASH;/g, errorXslSha1)
       .replace(/&JSFILEHASH;/g, jsFileSha1)
@@ -118,7 +118,6 @@ console.log(chalk`{magenta API Connect DataPower custom js policy maker}\n{cyan 
       const archive = archiver('zip', {zlib: {level: 9}});
       archive.pipe(output);
       archive.append(exportXml, {name: 'export.xml'});
-      archive.append(isJsonXsl, {name: `local/policy/${projName}/is-json.xsl`});
       archive.append(payloadXsl, {name: `local/policy/${projName}/payload.xsl`});
       archive.append(errorXsl, {name: `local/policy/${projName}/error.xsl`});
       archive.append(jsFile, {name: `local/policy/${projName}/${projName}.js`});
