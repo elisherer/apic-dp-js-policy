@@ -1,3 +1,9 @@
+[3.1.0] - 2019-06-25
+* Fixed the bug found in the previous version
+
+[3.0.0] - 2019-06-24 (DO NOT USE THIS VERSION!)
+* Found a bug of encoding escaped characters (\b, \f, \\, \", \n, \r, \t) in json strings.
+
 [2.2.1] - 2019-01-02
 * Add support to include package.json (if exists)
 

@@ -30,6 +30,10 @@ const message = props.message;
 // Set the response header
 hm.current.set('X-Hello-World', message);
 ```
+### request.body
+
+Note you cannot get the request body using `apim.getvariable('request.body')`. You should use `apim.readInput` or `apim.readInputAs<Type>` instead.
+
 
 (3) Create a yaml file in that folder named _{projName}_.yaml  (e.g. **helloWorld**.yaml)
 

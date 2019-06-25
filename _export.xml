@@ -107,7 +107,7 @@
             <Input>INPUT</Input>
             <GatewayScriptLocation>local:///policy/&PROJNAME;/&PROJNAME;.js</GatewayScriptLocation>
             <ActionDebug persisted="false">off</ActionDebug>
-            <Output>policy-output-temp</Output> <!-- This OUTPUT variable is caught by webapi-unified-traverse-check-error which runs unified-traverse-check-error.xsl which runs apim.policy.check.output which runs apim.policy.wrap.js -->
+            <Output>policy-output-temp</Output> <!-- This OUTPUT variable is caught by webapi-check-policy-output which runs apim.policy.check.output which runs apim.policy.wrap.js -->
             <NamedInOutLocationType>default</NamedInOutLocationType>
             <SSLClientConfigType>proxy</SSLClientConfigType>
             <Transactional>off</Transactional>
@@ -136,7 +136,7 @@
             <Actions class="StylePolicyAction">&PROJNAME;-get-payload</Actions>
             <Actions class="StylePolicyAction">&PROJNAME;-run</Actions>
             <Actions class="StylePolicyAction">webapi-on-error-abort</Actions>
-            <Actions class="StylePolicyAction">webapi-unified-traverse-check-error</Actions>
+            <Actions class="StylePolicyAction">webapi-check-policy-output</Actions>
         </StylePolicyRule>
 
     </configuration>
