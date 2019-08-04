@@ -142,7 +142,6 @@
     </configuration>
     <files>
         <file name="local:///policy/&PROJNAME;/error.xsl" src="local/policy/&PROJNAME;/error.xsl" location="local" hash="&ERRORFILEHASH;"/>
-        <file name="local:///policy/&PROJNAME;/&PROJNAME;.js" src="local/policy/&PROJNAME;/&PROJNAME;.js" location="local" hash="&JSFILEHASH;"/>
         <file name="local:///policy/&PROJNAME;/payload.xsl" src="local/policy/&PROJNAME;/payload.xsl" location="local" hash="&PAYLOADFILEHASH;"/>
         <!--&MOREFILES;-->
     </files>

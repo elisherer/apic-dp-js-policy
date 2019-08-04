@@ -39,11 +39,6 @@ console.log(chalk`{magenta API Connect DataPower custom js policy maker}\n{cyan 
 
     logI`Starting to create {blue [${projName}]} ...`;
 
-    logI`Reading js file ${projName}.js ...`;
-    const jsFile = fs.readFileSync(path.join(projPath, projName + '.js'), 'utf8');
-    const jsFileSha1 = sha1base64(jsFile);
-    logS`Finished reading js file {yellow (Sha1 hash = ${jsFileSha1})}`;
-
     logI`Validating yaml file ${projName}.yaml ...`;
     const yamlFile = fs.readFileSync(path.join(projPath, projName + '.yaml'), 'utf8');
     /**
@@ -75,7 +70,10 @@ console.log(chalk`{magenta API Connect DataPower custom js policy maker}\n{cyan 
 
     //more files
     let moreFilesXML = '';
-    const supportedFiles = ['package.json'];
+    const supportedFiles = fs.readdirSync(projPath).filter(file =>
+      file === 'package.json' ||
+      (file.endsWith('.js') && !file.endsWith('.spec.js') && !file.endsWith('.test.js'))
+    );
     const moreFiles = [];
     supportedFiles.forEach(fileName => {
       const filePath = path.join(projPath, fileName);
@@ -95,7 +93,6 @@ console.log(chalk`{magenta API Connect DataPower custom js policy maker}\n{cyan 
       .replace(/&PROJNAME;/g, projName)
       .replace(/&PAYLOADFILEHASH;/g, payloadXslSha1)
       .replace(/&ERRORFILEHASH;/g, errorXslSha1)
-      .replace(/&JSFILEHASH;/g, jsFileSha1)
       .replace(/<!--&MOREFILES;-->/g, moreFilesXML);
 
     logS`Finished preparing export.xml file`;
@@ -120,7 +117,6 @@ console.log(chalk`{magenta API Connect DataPower custom js policy maker}\n{cyan 
       archive.append(exportXml, {name: 'export.xml'});
       archive.append(payloadXsl, {name: `local/policy/${projName}/payload.xsl`});
       archive.append(errorXsl, {name: `local/policy/${projName}/error.xsl`});
-      archive.append(jsFile, {name: `local/policy/${projName}/${projName}.js`});
       moreFiles.forEach(fileDesc => {
         archive.append(fileDesc.fileContents, {name: `local/policy/${projName}/${fileDesc.fileName}`});
       });

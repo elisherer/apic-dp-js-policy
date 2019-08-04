@@ -1,3 +1,6 @@
+[3.2.0] - 2019-08-04
+* Add support for multiple js files in a project (ignores .spec/.test.js files)
+
 [3.1.0] - 2019-06-25
 * Fixed the bug found in the previous version
 
