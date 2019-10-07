@@ -47,6 +47,8 @@ console.log(chalk`{magenta API Connect DataPower custom js policy maker}\n{cyan 
     const yamlObj = YAML.parse(yamlFile);
     const expectedPolicyVersion = "1.0.0";
     assert.strictEqual(yamlObj.policy, expectedPolicyVersion, `  Expecting [policy] to be ${expectedPolicyVersion} but got ${yamlObj.policy} instead`);
+    const policyVersion = yamlObj.info.version;
+    assert.ok(policyVersion, `  [info.version] is required`);
     assert.strictEqual(yamlObj.info.name, projName, `  Expecting [info.name] to be ${projName} but got ${yamlObj.info.name} instead`);
     const nameRegex = /^([a-z0-9]+(-)*)*([a-z0-9])$/;
     assert(nameRegex.test(yamlObj.info.name), `  Expecting [info.name] to pass regex: ${nameRegex.source}, value was ${yamlObj.info.name}`);
@@ -129,7 +131,7 @@ console.log(chalk`{magenta API Connect DataPower custom js policy maker}\n{cyan 
       archive.finalize();
     });
 
-    const policyZipPath = path.join(outputDir, `policy-${timestamp}-${projName}.zip`);
+    const policyZipPath = path.join(outputDir, `policy-${timestamp}-${projName}_v${policyVersion}.zip`);
     await new Promise((resolve, reject) => {
       logI`Preparing custom policy zip file ...`;
       const output = fs.createWriteStream(policyZipPath);

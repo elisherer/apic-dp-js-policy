@@ -35,15 +35,15 @@ hm.current.set('X-Hello-World', message);
 Note you cannot get the request body using `apim.getvariable('request.body')`. You should use `apim.readInput` or `apim.readInputAs<Type>` instead.
 
 
-(3) Create a yaml file in that folder named _{projName}_.yaml  (e.g. **helloWorld**.yaml)
+(3) Create a yaml file in that folder named _{projName}_.yaml  (e.g. **hello-world**.yaml)
 
 YAML file example:
 ```yaml
 policy: 1.0.0
 
 info:
-  title: Hello World
-  name: helloWorld
+  title: hello-world
+  name: hello-world
   version: 1.0.0
   description: Hello World Extension
 
@@ -72,9 +72,9 @@ properties:
 
 (4) You will now have the following folder structure:
 ```
-  helloWorld/
-    helloWorld.js
-    helloWorls.yaml
+  hello-world/
+    hello-world.js
+    hello-world.yaml
 ```
 
 Run the following command from outside that folder:
@@ -82,7 +82,15 @@ Run the following command from outside that folder:
 apic-dp-js-policy --project {projName}
 ```
 
-(e.g. `apic-dp-js-policy -p helloWorld`)
+(e.g. `apic-dp-js-policy -p hello-world`)
+
+## Arguments
+
+|Argument     |Required|Description
+|-------------|--------|-----------
+|`-p`/`--path`|Yes     |The project's path
+|`-n`/`--name`|No      |
+
 
 ## Credits
 

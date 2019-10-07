@@ -1,3 +1,6 @@
+[3.3.0] - 2019-10-07
+* Add policy version to zip file name to allow multiple versions to be created and identified in the same output folder.
+
 [3.2.0] - 2019-08-04
 * Add support for multiple js files in a project (ignores .spec/.test.js files)
 
