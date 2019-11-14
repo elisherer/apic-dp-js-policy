@@ -12,9 +12,9 @@ npm i -g apic-dp-js-policy
 
 ## Usage
 
-(1) Create a folder with the script's name (no spaces, preferablly lower camelCase), This name will be further referred as _{projName}_ (for example: **helloWorld**).
+(1) Create a folder with the script's name (no spaces, all lowercase and hyphens), This name will be further referred as _{projName}_ (for example: **hello-world**).
 
-(2) Create a JavaScript file in that folder named _{projName}_.js (e.g. **helloWorld**.js)
+(2) Create a JavaScript file in that folder named _{projName}_.js (e.g. **hello-world**.js)
 
 JavaScript file example:
 ```js
@@ -77,6 +77,8 @@ properties:
     hello-world.yaml
 ```
 
+* **Note:** Any other file in that folder would be added to the policy's folder, so you could add js files to require from your code.
+
 Run the following command from outside that folder:
 ```
 apic-dp-js-policy --project {projName}
@@ -86,11 +88,18 @@ apic-dp-js-policy --project {projName}
 
 ## Arguments
 
-|Argument     |Required|Description
-|-------------|--------|-----------
-|`-p`/`--path`|Yes     |The project's path
-|`-n`/`--name`|No      |
+|Argument     |Required|Default|Description
+|-------------|--------|-------|-----------
+|`-p`/`--path`|Yes     |   -   |The project's path
+|`-n`/`--name`|No      |`path.basename(argv.path)`|
+|`-h`/`--hashLength`|No      | `6` | Number of characters from the hash of the main js file to add to the result file's name
+|`-t`/`--timestamp`|No      |`false`| Use timestamp (i.e. 2019-07-17T12-00-00-000Z) instead of hash in the zip file name
 
+
+e.g. The result file name would look like:
+```
+policy-hello-world_v1.0.0-x2GTXy.zip
+```
 
 ## Credits
 
